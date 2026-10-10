@@ -1,5 +1,5 @@
-import {rad,deg,G,inverseG,profiles,angles,maxForce,effectiveForce} from './model.js?v=20261010-6';
-import {plot,download,exportProfiles} from './chart.js?v=20261010-6';
+import {rad,deg,G,inverseG,profiles,angles,maxForce,effectiveForce} from './model.js?v=20261010-7';
+import {plot,download,exportProfiles} from './chart.js?v=20261010-7';
 const $=id=>document.getElementById(id),form=$('parameters');let csv='',recOverride=null,lastPair=null;
 function invalid(message){lastPair=null;$('status').textContent=message;$('status').classList.add('invalid');for(const id of ['density-chart','com-chart','geometry'])$(id).innerHTML='';for(const id of ['angles-value','q-value','volume-value','d-value'])$(id).textContent='—';$('csv').disabled=true;$('svg').disabled=true;}
 function update(){
@@ -31,11 +31,11 @@ function update(){
  $('angles-value').textContent=`${deg(rec).toFixed(1)}° / ${deg(adv).toFixed(1)}°`;
  const qmax=Math.max(...data.rows.filter(r=>r.Q!==null).map(r=>Math.abs(r.Q)));
  $('q-value').textContent=qmax.toFixed(4);$('volume-value').textContent=(100*data.volumeResidual).toFixed(3)+'%';$('d-value').textContent=data.d.toFixed(3);
- const common={xlim:[-.5,.5],xlabel:'Transverse coordinate ζ = z/H',bands:[[-.5,-data.h],[data.h,.5]],vertical:[-data.h,data.h]};
+ const common={xlim:[-.5,.5],xlabel:[{text:'Transverse coordinate '},{text:'ζ = z/H',math:true}],bands:[[-.5,-data.h],[data.h,.5]],vertical:[-data.h,data.h]};
  const dens=[{points:data.rows.map(r=>[r.z,r.R]),color:'#5d9f0b'}],com=[{points:data.rows.map(r=>[r.z,r.Q]),color:'#5d9f0b'}];
  if($('mirror').checked){dens.push({points:mirror.rows.map(r=>[r.z,r.R]),color:'#477ca6',dash:'7 5',width:1.8});com.push({points:mirror.rows.map(r=>[r.z,r.Q]),color:'#477ca6',dash:'7 5',width:1.8});}
- plot($('density-chart'),{...common,series:dens,ylim:[0,Math.min(1,Math.max(.2,Math.max(...data.rows.map(r=>r.R))*1.15))],ylabel:'Density R = ρ/ρ_l'});
- const qscale=Math.max(.005,qmax*1.15);plot($('com-chart'),{...common,series:com,ylim:[-qscale,qscale],ylabel:'Displacement Q = q/H',horizontal:[0]});
+ plot($('density-chart'),{...common,series:dens,ylim:[0,Math.min(1,Math.max(.2,Math.max(...data.rows.map(r=>r.R))*1.15))],ylabel:[{text:'Density '},{text:'R = ρ/ρ',math:true},{text:'l',sub:true}]});
+ const qscale=Math.max(.005,qmax*1.15);plot($('com-chart'),{...common,series:com,ylim:[-qscale,qscale],ylabel:[{text:'Displacement '},{text:'Q = q/H',math:true}],horizontal:[0]});
  $('status').classList.remove('invalid');$('status').textContent=(driven?'Angles calculated from theory. '+forceInfo+' ':'')+(Math.abs(rec-adv)<1e-8?'Symmetric roll: Q = 0 in every occupied layer. Near-wall regions are excluded from the effective geometry.':'Density cannot distinguish swapped menisci. Q distinguishes them by its sign; its density-weighted average is zero.');
  geometry(data,l);
  csv=forceMetadata+`# theta0_deg=${deg(theta0)},theta_rec_deg=${deg(rec)},theta_adv_deg=${deg(adv)},phi=${phi},ell=${l},delta=${delta}\nz_over_H,rho_over_rho_l,q_over_H,rho_swapped,q_swapped\n`+data.rows.map((r,i)=>[r.z,r.R,r.Q??'',mirror.rows[i].R,mirror.rows[i].Q??''].join(',')).join('\n');
