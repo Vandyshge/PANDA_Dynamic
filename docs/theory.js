@@ -1,5 +1,5 @@
-import {rad,deg,angles,maxForce,G,effectiveForce} from './model.js';
-import {plot,download,exportSVG} from './chart.js';
+import {rad,deg,angles,maxForce,G,effectiveForce} from './model.js?v=20261010-3';
+import {plot,download,exportSVG} from './chart.js?v=20261010-3';
 const $=id=>document.getElementById(id),form=$('parameters'),colors={none:'#5d9f0b',threshold:'#d78233',linear:'#477ca6'},names={none:'Без сопротивления',threshold:'Постоянное',linear:'Пропорциональное скорости'};
 let csv='';
 function update(){

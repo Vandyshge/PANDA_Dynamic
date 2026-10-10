@@ -1,5 +1,5 @@
-import {rad,deg,G,inverseG,profiles} from './model.js';
-import {plot,download,exportProfiles} from './chart.js';
+import {rad,deg,G,inverseG,profiles} from './model.js?v=20261010-3';
+import {plot,download,exportProfiles} from './chart.js?v=20261010-3';
 const $=id=>document.getElementById(id),form=$('parameters');let csv='',recOverride=null,lastPair=null;
 function invalid(message){$('status').textContent=message;$('status').classList.add('invalid');for(const id of ['density-chart','com-chart','geometry'])$(id).innerHTML='';for(const id of ['angles-value','q-value','volume-value','d-value'])$(id).textContent='—';$('csv').disabled=true;$('svg').disabled=true;}
 function update(){
