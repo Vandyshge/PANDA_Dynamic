@@ -1,5 +1,5 @@
-import {rad,deg,angles,maxForce,G,effectiveForce} from './model.js?v=20261010-3';
-import {plot,download,exportSVG} from './chart.js?v=20261010-3';
+import {rad,deg,angles,maxForce,G,effectiveForce} from './model.js?v=20261010-4';
+import {plot,download,exportSVG} from './chart.js?v=20261010-4';
 const $=id=>document.getElementById(id),form=$('parameters'),colors={none:'#5d9f0b',threshold:'#d78233',linear:'#477ca6'},names={none:'Без сопротивления',threshold:'Постоянное',linear:'Пропорциональное скорости'};
 let csv='';
 function update(){
@@ -17,6 +17,6 @@ function update(){
  $('legend').innerHTML=models.map(m=>`<span><i style="background:${colors[m]}"></i>${names[m]}</span>`).join('')+($('linearization').checked?'<span>··· линейное приближение выбранной модели</span>':'');
  const limit=maxForce(theta0,Ly,gamma);$('status').classList.toggle('invalid',!chosen);
  $('status').textContent=chosen?`Сохранение объёма: остаток ${(G(chosen.rec)+G(chosen.adv)-2*G(theta0)).toExponential(1)}. Геометрический предел капиллярной силы: ${limit.toFixed(3)} ε/σ. При F_eff = 0 оба угла равны θ₀.`:`F_eff превышает ${limit.toFixed(3)} ε/σ: допустимая пара круговых менисков отсутствует. Уменьшите силу или измените параметры.`;
- if(chosen){const p=new URLSearchParams({theta0:String(deg(theta0)),rec:String(deg(chosen.rec)),adv:String(deg(chosen.adv))});sessionStorage.setItem('panda-theory',p.toString());}else sessionStorage.removeItem('panda-theory');
+ if(chosen){const p=new URLSearchParams({theta0:String(deg(theta0)),rec:String(deg(chosen.rec)),adv:String(deg(chosen.adv)),force:String(force),gamma:String(gamma),ly:String(Ly),f0:String(F0),drag:String(drag),model});sessionStorage.setItem('panda-theory',p.toString());}else sessionStorage.removeItem('panda-theory');
 }
 form.addEventListener('input',update);form.addEventListener('submit',e=>e.preventDefault());$('reset').onclick=()=>{form.reset();update()};$('csv').onclick=()=>download('panda-dynamic-theory.csv',csv,'text/csv;charset=utf-8');$('svg').onclick=()=>exportSVG('angles-chart','panda-dynamic-theory.svg');update();

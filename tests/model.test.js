@@ -28,3 +28,11 @@ test('unphysical periodic and intersecting geometries are rejected',()=>{
  assert.equal(profiles({theta0:rad(170),rec:rad(170),adv:rad(170),l:.3,phi:.1,delta:0}).valid,false);
  assert.equal(profiles({theta0:rad(30),rec:rad(170),adv:rad(170),l:.3,phi:.85,delta:.15}).valid,false);
 });
+test('theory-driven profiles preserve volume and respond to force and resistance',()=>{
+ const theta0=rad(128),base={theta0,l:2.293,phi:.45,delta:.017},qmax=data=>Math.max(...data.rows.filter(r=>r.Q!==null).map(r=>Math.abs(r.Q)));
+ const result=(force,model)=>{const a=angles(effectiveForce(force,model,1.8,.55),theta0,18.624,.398);assert.ok(a);const p=profiles({...base,...a});assert.ok(p.valid);close(p.volumeResidual,0);return p;};
+ close(qmax(result(0,'none')),0);close(qmax(result(1,'threshold')),0);
+ assert.ok(qmax(result(4.96,'none'))>qmax(result(2,'none')));
+ assert.ok(qmax(result(4.96,'none'))>qmax(result(4.96,'threshold')));
+ assert.ok(qmax(result(4.96,'none'))>qmax(result(4.96,'linear')));
+});
