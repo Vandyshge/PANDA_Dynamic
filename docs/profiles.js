@@ -1,5 +1,5 @@
-import {rad,deg,G,inverseG,profiles,angles,maxForce,effectiveForce} from './model.js?v=20261010-4';
-import {plot,download,exportProfiles} from './chart.js?v=20261010-4';
+import {rad,deg,G,inverseG,profiles,angles,maxForce,effectiveForce} from './model.js?v=20261010-5';
+import {plot,download,exportProfiles} from './chart.js?v=20261010-5';
 const $=id=>document.getElementById(id),form=$('parameters');let csv='',recOverride=null,lastPair=null;
 function invalid(message){lastPair=null;$('status').textContent=message;$('status').classList.add('invalid');for(const id of ['density-chart','com-chart','geometry'])$(id).innerHTML='';for(const id of ['angles-value','q-value','volume-value','d-value'])$(id).textContent='—';$('csv').disabled=true;$('svg').disabled=true;}
 function update(){
@@ -47,7 +47,7 @@ function geometry(data,l){
 }
 form.addEventListener('input',e=>{if(e.target.id==='rec')recOverride=null;if(e.target.id==='angle-mode'&&$('angle-mode').value==='manual')recOverride=lastPair?.rec??null;update()});
 form.addEventListener('submit',e=>e.preventDefault());
-$('reset').onclick=()=>{recOverride=null;form.reset();update()};
+$('reset').onclick=()=>{recOverride=null;HTMLFormElement.prototype.reset.call(form);update()};
 $('symmetric').onclick=()=>{recOverride=null;$('rec').value=$('theta0').value;$('adv').value=$('theta0').value;update()};
 $('swap').onclick=()=>{if(!lastPair)return;recOverride=lastPair.adv;$('rec').value=deg(lastPair.adv);$('adv').value=deg(lastPair.rec);update()};
 $('from-theory').onclick=()=>{
