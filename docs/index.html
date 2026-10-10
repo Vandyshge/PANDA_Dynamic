@@ -5,6 +5,14 @@
 <main class="workspace">
 <aside class="controls"><div class="control-heading"><p class="eyebrow">Liquid roll in a slit nanopore</p><h1>Two angles.<br>One external force.</h1><p>Explore how a moving liquid roll changes its advancing and receding contact angles under different resistance models.</p></div>
 <form id="parameters">
+<section class="control-group"><h2>Visible curves</h2>
+<label class="checkbox-control"><input id="show-none" type="checkbox" checked>No additional resistance</label>
+<label class="checkbox-control"><input id="show-threshold" type="checkbox">Constant resistance</label>
+<label class="checkbox-control"><input id="show-linear" type="checkbox">Velocity-dependent resistance</label>
+<div class="field-pair"><label class="checkbox-control"><input id="show-adv" type="checkbox" checked>Advancing</label><label class="checkbox-control"><input id="show-rec" type="checkbox" checked>Receding</label></div>
+<label class="checkbox-control"><input id="linearization" type="checkbox">Linear approximation of the active model</label>
+<p id="selection-note" class="chart-note">Choose any combination of models and angle branches.</p>
+</section>
 <section class="control-group"><h2>Geometry and capillarity</h2>
 <label class="range-control"><span>Equilibrium angle, θ₀ <output id="theta0-out"></output></span><input id="theta0" type="range" min="30" max="170" step="1" value="150"></label>
 <div class="field-pair"><label class="field-control"><span>γ<sub>lv</sub>, ε/σ²</span><input id="gamma" type="number" min="0.01" max="10" step="0.001" value="0.398" required></label><label class="field-control"><span>L<sub>y</sub>, σ</span><input id="ly" type="number" min="0.1" max="1000" step="0.001" value="18.624" required></label></div>
@@ -18,13 +26,6 @@
 <label class="range-control"><span>Threshold force, F₀ <output id="f0-out"></output></span><input id="f0" type="range" min="0" max="10" step="0.05" value="1.8"></label>
 <label class="model-choice"><input type="radio" name="model" value="linear"><span><i style="background:#477ca6"></i>Velocity-dependent resistance βv<sub>x</sub><small>v<sub>x</sub> = bF<sub>ext</sub>; F<sub>eff</sub> = (1 − βb)F<sub>ext</sub></small></span></label>
 <label class="range-control"><span>Resistance fraction, βb <output id="drag-out"></output></span><input id="drag" type="range" min="0" max="1" step="0.01" value="0.55"></label>
-</section><section class="control-group"><h2>Visible curves</h2>
-<label class="checkbox-control"><input id="show-none" type="checkbox" checked>No additional resistance</label>
-<label class="checkbox-control"><input id="show-threshold" type="checkbox">Constant resistance</label>
-<label class="checkbox-control"><input id="show-linear" type="checkbox">Velocity-dependent resistance</label>
-<div class="field-pair"><label class="checkbox-control"><input id="show-adv" type="checkbox" checked>Advancing</label><label class="checkbox-control"><input id="show-rec" type="checkbox" checked>Receding</label></div>
-<label class="checkbox-control"><input id="linearization" type="checkbox">Linear approximation of the active model</label>
-<p id="selection-note" class="chart-note">Choose any combination of models and angle branches.</p>
 </section><div class="control-actions"><button id="reset" class="secondary-button" type="button">Reset</button><button id="csv" class="primary-button" type="button">Export CSV</button></div>
 </form></aside>
 <section class="visual-panel"><div class="panel-head"><div><p class="eyebrow">01 / Theory</p><h2>Contact-angle splitting versus F<sub>ext</sub></h2></div><button id="svg" class="secondary-button">Export SVG</button></div>
