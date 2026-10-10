@@ -1,6 +1,7 @@
 const NS='http://www.w3.org/2000/svg';
 export function plot(svg,{series,xlim,ylim,xlabel,ylabel,markers=[],bands=[],extra='',horizontal=[],vertical=[]}){
- const W=760,H=410,left=72,right=25,top=25,bottom=57,w=W-left-right,h=H-top-bottom;
+ const compact=svg.id==='density-chart'||svg.id==='com-chart';
+ const W=compact?520:760,H=compact?380:410,left=compact?66:72,right=25,top=25,bottom=57,w=W-left-right,h=H-top-bottom;
  const X=x=>left+(x-xlim[0])/(xlim[1]-xlim[0])*w,Y=y=>top+h-(y-ylim[0])/(ylim[1]-ylim[0])*h;
  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML='';
  const add=(name,attrs,text)=>{const e=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);if(text!=null)e.textContent=text;svg.append(e);return e;};
@@ -25,3 +26,8 @@ export function plot(svg,{series,xlim,ylim,xlabel,ylabel,markers=[],bands=[],ext
 }
 export function download(name,content,type){const u=URL.createObjectURL(new Blob([content],{type})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 export function exportSVG(id,name){const svg=document.getElementById(id).cloneNode(true);svg.setAttribute('xmlns',NS);download(name,new XMLSerializer().serializeToString(svg),'image/svg+xml');}
+export function exportProfiles(){
+ const svg=document.createElementNS(NS,'svg');svg.setAttribute('xmlns',NS);svg.setAttribute('viewBox','0 0 1040 380');svg.setAttribute('width','1040');svg.setAttribute('height','380');
+ for(const [i,id] of ['density-chart','com-chart'].entries()){const panel=document.getElementById(id).cloneNode(true);panel.setAttribute('x',String(i*520));panel.setAttribute('y','0');panel.setAttribute('width','520');panel.setAttribute('height','380');svg.append(panel);}
+ download('panda-dynamic-profiles.svg',new XMLSerializer().serializeToString(svg),'image/svg+xml');
+}
